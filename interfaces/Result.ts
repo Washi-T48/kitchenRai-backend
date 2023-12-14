@@ -7,4 +7,5 @@ export default interface interfaceMySQLResult {
   message: string;
   protocol41: boolean;
   changedRows: number;
+  err: Error;
 }

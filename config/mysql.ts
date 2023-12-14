@@ -8,7 +8,7 @@ const params = {
   database: config.mysql.database,
 };
 
-const Connect = async () =>
+export const Connect = async () =>
   new Promise<mysql.Connection>((resolve, reject) => {
     const connection = mysql.createConnection(params);
     connection.connect((error) => {
@@ -20,7 +20,7 @@ const Connect = async () =>
     });
   });
 
-const Query = async <T>(connection: mysql.Connection, query: string) =>
+export const Query = async <T>(connection: mysql.Connection, query: string) =>
   new Promise<T>((resolve, reject) => {
     connection.query(query, (error, results) => {
       if (error) {

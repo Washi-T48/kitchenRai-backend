@@ -33,8 +33,7 @@ const signJWT = (
       }
     );
   } catch (error) {
-    callback(error, null);
+    console.log(error);
   }
 };
-
 export default signJWT;
