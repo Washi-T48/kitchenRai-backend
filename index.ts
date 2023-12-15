@@ -1,7 +1,11 @@
 import Express, { Response, Request } from "express";
 import config from "./config/config";
 import mysql from "mysql2";
+import cors from "cors";
 const app = Express();
+
+app.use(cors());
+app.use(Express.json());
 const ServerPORT = config.server.SERVERPORT;
 
 const db = mysql.createConnection({
@@ -38,9 +42,13 @@ app.get("/tables", (req: Request, res: Response) => {
     } else {
       res.setHeader("Content-type", "application/json");
       res.json(results);
-      console.log("Beep Boop");
+      console.log(Math.random());
     }
   });
+});
+
+app.get("/tables2", (req: Request, res: Response) => {
+  res.send("Hello World");
 });
 
 app.listen(ServerPORT, () => {
