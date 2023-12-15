@@ -24,7 +24,7 @@
   "version": "1.0.0",
   "main": "server.ts",
   "scripts": {
-    "dev": "npx ts-node server.js"
+    "dev": "npx ts-node index.js"
   },
   "author": "",
   "license": "ISC",
