@@ -1,7 +1,7 @@
 import config from "../config/config";
 import mysql from "mysql2";
 
-export default class Order {
+export default class Menu {
   private order_id: number = -1;
   private receipt_id: number = -1;
   private menu_id: string = "";
@@ -29,6 +29,30 @@ export default class Order {
       } else {
         console.log("Connected to MySQL database");
       }
+    });
+  }
+
+  public async getAll() {
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.error("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      this.db.query("SELECT * FROM menu", (error, results) => {
+        if (error) {
+          console.error("Error executing query:", error);
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
     });
   }
 }
