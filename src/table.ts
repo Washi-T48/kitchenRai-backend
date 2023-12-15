@@ -53,6 +53,11 @@ export default class Table {
     });
   }
 
+  public checkIn(id: number) {
+    console.log("Table checkin");
+    // Add your checkin logic here
+  }
+
   public checkOut(id: number) {
     console.log("Table checkout");
     // Add your checkout logic here

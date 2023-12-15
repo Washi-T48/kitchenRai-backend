@@ -1,10 +1,16 @@
 import config from "../config/config";
 import mysql from "mysql2";
 
-export default class Menu_id {
+export default class Kitchen {
+  private orders_id: number = -1;
+  private receipt_id: number = -1;
   private menu_id: number = -1;
-  private name: number = -1;
-  private unit: string = "";
+  private tables_id: number = -1;
+  private customer_id: number = -1;
+  private created: string = "";
+  private served: string = "";
+  private isTakeOut: boolean = false;
+  private isValid: boolean = true;
 
   private db: mysql.Connection;
 
@@ -39,7 +45,7 @@ export default class Menu_id {
     });
 
     return new Promise((resolve, reject) => {
-      this.db.query("SELECT * FROM menu", (error, results) => {
+      this.db.query("SELECT * FROM orders", (error, results) => {
         if (error) {
           console.error("Error executing query:", error);
           reject(error);
@@ -48,5 +54,10 @@ export default class Menu_id {
         }
       });
     });
+  }
+
+  public serve(orders_id: number) {
+    await new Promise<void>((resolve, reject) => {
+        
   }
 }
