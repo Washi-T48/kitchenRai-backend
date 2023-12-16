@@ -80,4 +80,18 @@ export default class Kitchen {
   public async serve(orders_id: number) {
     // Insert your serve logic here
   }
+
+  public async closeConnection() {
+    await new Promise<void>((resolve, reject) => {
+      this.db.end((error) => {
+        if (error) {
+          console.error("Error closing connection:", error);
+          reject(error);
+        } else {
+          console.log("Connection closed");
+          resolve();
+        }
+      });
+    });
+  }
 }

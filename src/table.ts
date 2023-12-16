@@ -54,7 +54,6 @@ export default class Table {
   }
 
   public checkIn(id: number) {
-    console.log("Table checkin");
     this.tables_id = id;
     return new Promise((resolve, reject) => {
       this.db.query(
@@ -73,7 +72,6 @@ export default class Table {
   }
 
   public checkOut(id: number) {
-    console.log("Table checkout");
     this.tables_id = id;
     return new Promise((resolve, reject) => {
       this.db.query(
@@ -116,5 +114,19 @@ export default class Table {
 
   public getID(): number {
     return this.tables_id;
+  }
+
+  public async closeConnection() {
+    await new Promise<void>((resolve, reject) => {
+      this.db.end((error) => {
+        if (error) {
+          console.error("Error closing connection:", error);
+          reject(error);
+        } else {
+          console.log("Connection closed");
+          resolve();
+        }
+      });
+    });
   }
 }
