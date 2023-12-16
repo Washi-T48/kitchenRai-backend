@@ -1,7 +1,7 @@
 import config from "../config/config";
 import mysql from "mysql2";
 
-export default class Menu_id {
+export default class Menu {
   private menu_id: number = -1;
   private name: number = -1;
   private unit: string = "";
@@ -51,7 +51,16 @@ export default class Menu_id {
   }
 
   public async getDetails(menu_id: number) {
-    await new Promise<void>((resolve, reject) => {});
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.error("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
 
     return new Promise((resolve, reject) => {
       this.db.query(

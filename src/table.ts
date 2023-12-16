@@ -57,7 +57,7 @@ export default class Table {
     this.tables_id = id;
     return new Promise((resolve, reject) => {
       this.db.query(
-        "UPDATE tables SET available = 1 WHERE tables_id = ?",
+        "UPDATE tables SET available = 0 WHERE tables_id = ?",
         [id],
         (error, results) => {
           if (error) {
@@ -75,7 +75,7 @@ export default class Table {
     this.tables_id = id;
     return new Promise((resolve, reject) => {
       this.db.query(
-        "UPDATE tables SET available = 0 WHERE tables_id = ?",
+        "UPDATE tables SET available = 1 WHERE tables_id = ?",
         [id],
         (error, results) => {
           if (error) {

@@ -56,7 +56,6 @@ app.get("/menu/:id", async (req: Request, res: Response) => {
   console.log("GET /menu/:id");
   const tempMenu = new Menu();
   res.json(await tempMenu.getDetails(parseInt(req.params.id)));
-  tempMenu.getDetails(parseInt(req.params.id));
   tempMenu.closeConnection();
 });
 
