@@ -56,8 +56,7 @@ export default class Kitchen {
     });
   }
 
-  public serve(orders_id: number) {
-    await new Promise<void>((resolve, reject) => {
-        
+  public async serve(orders_id: number) {
+    await new Promise<void>((resolve, reject) => {});
   }
 }
