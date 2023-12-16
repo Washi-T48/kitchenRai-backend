@@ -55,17 +55,40 @@ export default class Table {
 
   public checkIn(id: number) {
     console.log("Table checkin");
-    // Add your checkin logic here
+    this.tables_id = id;
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        "UPDATE tables SET available = 1 WHERE tables_id = ?",
+        [id],
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
   }
 
   public checkOut(id: number) {
     console.log("Table checkout");
-    // Add your checkout logic here
-  }
-
-  public reserve(id: number, customer_id: number) {
-    console.log("Table reserve");
-    // Add your reserve logic here
+    this.tables_id = id;
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        "UPDATE tables SET available = 0 WHERE tables_id = ?",
+        [id],
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
   }
 
   public async getDetails(id: number) {

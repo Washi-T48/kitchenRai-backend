@@ -49,4 +49,22 @@ export default class Menu_id {
       });
     });
   }
+
+  public async getDetails(menu_id: number) {
+    await new Promise<void>((resolve, reject) => {});
+
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        `SELECT * FROM menu WHERE menu_id = ${menu_id}`,
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+  }
 }

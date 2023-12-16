@@ -45,18 +45,39 @@ export default class Kitchen {
     });
 
     return new Promise((resolve, reject) => {
-      this.db.query("SELECT * FROM orders", (error, results) => {
-        if (error) {
-          console.error("Error executing query:", error);
-          reject(error);
-        } else {
-          resolve(results);
+      this.db.query(
+        "SELECT * FROM orders LEFT JOIN menu ON orders.menu_id = menu.menu_id",
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
         }
-      });
+      );
+    });
+  }
+
+  public async getDetails(orders_id: number) {
+    await new Promise<void>((resolve, reject) => {});
+
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        `SELECT * FROM orders WHERE orders_id = ${orders_id} LEFT JOIN menu ON orders.menu_id = menu.menu_id`,
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
     });
   }
 
   public async serve(orders_id: number) {
-    await new Promise<void>((resolve, reject) => {});
+    // Insert your serve logic here
   }
 }
