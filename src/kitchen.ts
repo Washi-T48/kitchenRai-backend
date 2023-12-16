@@ -2,7 +2,7 @@ import config from "../config/config";
 import mysql from "mysql2";
 
 export default class Kitchen {
-  private orders_id: number = -1;
+  private order_id: number = -1;
   private receipt_id: number = -1;
   private menu_id: number = -1;
   private tables_id: number = -1;
@@ -59,12 +59,21 @@ export default class Kitchen {
     });
   }
 
-  public async getDetails(orders_id: number) {
-    await new Promise<void>((resolve, reject) => {});
+  public async getDetails(order_id: number) {
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.error("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
 
     return new Promise((resolve, reject) => {
       this.db.query(
-        `SELECT * FROM orders WHERE orders_id = ${orders_id} LEFT JOIN menu ON orders.menu_id = menu.menu_id`,
+        "SELECT * FROM orders LEFT JOIN menu ON orders.menu_id = menu.menu_id",
         (error, results) => {
           if (error) {
             console.error("Error executing query:", error);
@@ -77,7 +86,7 @@ export default class Kitchen {
     });
   }
 
-  public async serve(orders_id: number) {
+  public async serve(order_id: number) {
     // Insert your serve logic here
   }
 
