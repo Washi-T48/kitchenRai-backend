@@ -70,7 +70,6 @@ app.get("/orders/:id", async (req: Request, res: Response) => {
   console.log("GET /orders/:id");
   const tempKitchen = new Kitchen();
   res.json(await tempKitchen.getDetails(parseInt(req.params.id)));
-  tempKitchen.getDetails(parseInt(req.params.id));
   tempKitchen.closeConnection();
 });
 

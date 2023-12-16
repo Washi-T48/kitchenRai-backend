@@ -73,7 +73,7 @@ export default class Kitchen {
 
     return new Promise((resolve, reject) => {
       this.db.query(
-        "SELECT * FROM orders LEFT JOIN menu ON orders.menu_id = menu.menu_id",
+        `SELECT * FROM orders LEFT JOIN menu ON orders.menu_id = menu.menu_id WHERE orders.order_id = ${order_id}`,
         (error, results) => {
           if (error) {
             console.error("Error executing query:", error);
