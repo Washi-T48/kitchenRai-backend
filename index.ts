@@ -74,9 +74,16 @@ app.get("/orders/:id", async (req: Request, res: Response) => {
 });
 
 app.get("/orders/:id/serve", async (req: Request, res: Response) => {
-  console.log("GET /orders/:id");
+  console.log("GET /orders/:id/serve");
   const tempKitchen = new Kitchen();
   res.json(await tempKitchen.serve(parseInt(req.params.id)));
+  tempKitchen.closeConnection();
+});
+
+app.get("/orders/:id/cancel", async (req: Request, res: Response) => {
+  console.log("GET /orders/:id/cancel");
+  const tempKitchen = new Kitchen();
+  res.json(await tempKitchen.cancel(parseInt(req.params.id)));
   tempKitchen.closeConnection();
 });
 

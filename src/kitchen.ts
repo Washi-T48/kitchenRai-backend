@@ -46,7 +46,7 @@ export default class Kitchen {
 
     return new Promise((resolve, reject) => {
       this.db.query(
-        "SELECT * FROM orders LEFT JOIN menu ON orders.menu_id = menu.menu_id",
+        "SELECT * FROM orders LEFT JOIN menu ON orders.menu_id = menu.menu_id WHERE served IS NULL AND isValid <> 0 ORDER BY created ASC",
         (error, results) => {
           if (error) {
             console.error("Error executing query:", error);
@@ -87,7 +87,57 @@ export default class Kitchen {
   }
 
   public async serve(order_id: number) {
-    console.log("serve" + order_id);
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.error("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        `UPDATE orders SET served = NOW() WHERE order_id = ${order_id}`,
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+  }
+
+  public async cancel(order_id: number) {
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.error("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        `UPDATE orders SET isValid = 0 WHERE order_id = ${order_id}`,
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
   }
 
   public async closeConnection() {
