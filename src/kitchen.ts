@@ -87,7 +87,7 @@ export default class Kitchen {
   }
 
   public async serve(order_id: number) {
-    // Insert your serve logic here
+    console.log("serve" + order_id);
   }
 
   public async closeConnection() {

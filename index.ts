@@ -73,6 +73,13 @@ app.get("/orders/:id", async (req: Request, res: Response) => {
   tempKitchen.closeConnection();
 });
 
+app.get("/orders/:id/serve", async (req: Request, res: Response) => {
+  console.log("GET /orders/:id");
+  const tempKitchen = new Kitchen();
+  res.json(await tempKitchen.serve(parseInt(req.params.id)));
+  tempKitchen.closeConnection();
+});
+
 app.listen(ServerPORT, () => {
   console.log(`Server is running on port ${ServerPORT}`);
 });
