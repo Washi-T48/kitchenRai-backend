@@ -3,7 +3,7 @@ import mysql from "mysql2";
 
 export default class Menu {
   private menu_id: number = -1;
-  private name: number = -1;
+  private name: string = "";
   private unit: string = "";
 
   private db: mysql.Connection;

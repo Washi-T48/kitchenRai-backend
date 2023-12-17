@@ -32,7 +32,7 @@ export default class Kitchen {
     });
   }
 
-  public async getAll() {
+  public async getAllOrders() {
     await new Promise<void>((resolve, reject) => {
       this.db.connect((error) => {
         if (error) {
@@ -86,7 +86,7 @@ export default class Kitchen {
     });
   }
 
-  public async addItem(order_id: number, menu_id: number) {
+  public async handleAddItem(receipt_id: number, menu_id: number) {
     await new Promise<void>((resolve, reject) => {
       this.db.connect((error) => {
         if (error) {
@@ -100,12 +100,40 @@ export default class Kitchen {
 
     return new Promise((resolve, reject) => {
       this.db.query(
-        `INSERT INTO orders (order_id, menu_id) VALUES (${order_id}, ${menu_id})`,
+        `INSERT INTO receipt (receipt_id) VALUES (${receipt_id}) ON DUPLICATE KEY UPDATE lastUpdate = CURRENT_TIMESTAMP;`,
         (error, results) => {
           if (error) {
             console.error("Error executing query:", error);
             reject(error);
           } else {
+            this.addItem(receipt_id, menu_id);
+            resolve(results);
+          }
+        }
+      );
+    });
+  }
+
+  public async addItem(receipt_id: number, menu_id: number) {
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.error("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        `INSERT INTO orders (receipt_id, menu_id) VALUES (${receipt_id}, ${menu_id})`,
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            this.addItem;
             resolve(results);
           }
         }
