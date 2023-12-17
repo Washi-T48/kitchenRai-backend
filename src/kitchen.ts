@@ -86,6 +86,33 @@ export default class Kitchen {
     });
   }
 
+  public async addItem(order_id: number, menu_id: number) {
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.error("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        `INSERT INTO orders (order_id, menu_id) VALUES (${order_id}, ${menu_id})`,
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+  }
+
   public async serve(order_id: number) {
     await new Promise<void>((resolve, reject) => {
       this.db.connect((error) => {

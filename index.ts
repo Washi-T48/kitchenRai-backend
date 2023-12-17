@@ -66,6 +66,18 @@ app.get("/orders", async (req: Request, res: Response) => {
   tempKitchen.closeConnection();
 });
 
+app.get("/orders/addItem/:id/:itemID", async (req: Request, res: Response) => {
+  console.log("GET /orders/addItem/:id/:itemID");
+  const tempKitchen = new Kitchen();
+  res.json(
+    await tempKitchen.addItem(
+      parseInt(req.params.id),
+      parseInt(req.params.itemID)
+    )
+  );
+  tempKitchen.closeConnection();
+});
+
 app.get("/orders/:id", async (req: Request, res: Response) => {
   console.log("GET /orders/:id");
   const tempKitchen = new Kitchen();
