@@ -86,7 +86,11 @@ export default class Kitchen {
     });
   }
 
-  public async handleAddItem(receipt_id: number, menu_id: number) {
+  public async handleAddItem(
+    receipt_id: number,
+    menu_id: number,
+    tables_id: number
+  ) {
     await new Promise<void>((resolve, reject) => {
       this.db.connect((error) => {
         if (error) {
@@ -106,7 +110,7 @@ export default class Kitchen {
             console.error("Error executing query:", error);
             reject(error);
           } else {
-            this.addItem(receipt_id, menu_id);
+            this.addItem(receipt_id, menu_id, tables_id);
             resolve(results);
           }
         }
@@ -114,7 +118,7 @@ export default class Kitchen {
     });
   }
 
-  public async addItem(receipt_id: number, menu_id: number) {
+  public async addItem(receipt_id: number, menu_id: number, tables_id: number) {
     await new Promise<void>((resolve, reject) => {
       this.db.connect((error) => {
         if (error) {
@@ -127,7 +131,7 @@ export default class Kitchen {
     });
     return new Promise((resolve, reject) => {
       this.db.query(
-        `INSERT INTO orders (receipt_id, menu_id) VALUES (${receipt_id}, ${menu_id})`,
+        `INSERT INTO orders (receipt_id, menu_id, tables_id) VALUES (${receipt_id}, ${menu_id} , ${tables_id})`,
         (error, results) => {
           if (error) {
             console.error("Error executing query:", error);
@@ -183,6 +187,33 @@ export default class Kitchen {
     return new Promise((resolve, reject) => {
       this.db.query(
         `UPDATE orders SET isValid = 0 WHERE order_id = ${order_id}`,
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+  }
+
+  public async getReceipt(receipt_id: number) {
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.error("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        `SELECT * FROM orders LEFT JOIN menu ON orders.menu_id = menu.menu_id WHERE orders.receipt_id = ${receipt_id} AND isValid <> 0`,
         (error, results) => {
           if (error) {
             console.error("Error executing query:", error);

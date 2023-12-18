@@ -67,14 +67,15 @@ app.get("/orders", async (req: Request, res: Response) => {
 });
 
 app.get(
-  "/orders/addItem/:id/menu/:itemID",
+  "/orders/addItem/:id/menu/:itemID/table/:tableID",
   async (req: Request, res: Response) => {
     console.log("GET /orders/addItem/:id/:itemID");
     const tempKitchen = new Kitchen();
     res.json(
       await tempKitchen.handleAddItem(
         parseInt(req.params.id),
-        parseInt(req.params.itemID)
+        parseInt(req.params.itemID),
+        parseInt(req.params.tableID)
       )
     );
     tempKitchen.closeConnection();
@@ -99,6 +100,13 @@ app.get("/orders/:id/cancel", async (req: Request, res: Response) => {
   console.log("GET /orders/:id/cancel");
   const tempKitchen = new Kitchen();
   res.json(await tempKitchen.cancel(parseInt(req.params.id)));
+  tempKitchen.closeConnection();
+});
+
+app.get("/receipt/:id/", async (req: Request, res: Response) => {
+  console.log("GET /receipt/:id/");
+  const tempKitchen = new Kitchen();
+  res.json(await tempKitchen.getReceipt(parseInt(req.params.id)));
   tempKitchen.closeConnection();
 });
 
