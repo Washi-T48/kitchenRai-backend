@@ -115,6 +115,7 @@ CREATE TABLE `receipt` (
     `payment_method` VARCHAR(50),
     `isPaid` BOOLEAN DEFAULT FALSE,
     `isValid` BOOLEAN DEFAULT TRUE,
+    `lastUpdate` DATETIME,
     PRIMARY KEY (`receipt_id`)
 );
 
