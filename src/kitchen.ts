@@ -213,7 +213,7 @@ export default class Kitchen {
 
     return new Promise((resolve, reject) => {
       this.db.query(
-        "SELECT receipt_id, DATE_FORMAT(datetime, '%H:%i:%S %b %d') as datetime, DATE_FORMAT(lastUpdate, '%H:%i %S/%e/%m') as lastUpdate, isValid FROM receipt",
+        "SELECT receipt_id, DATE_FORMAT(datetime, '%b %d %H:%i:%S ') as datetime, DATE_FORMAT(lastUpdate, '%b %d %H:%i:%S') as lastUpdate, isValid FROM receipt",
         (error, results) => {
           if (error) {
             console.error("Error executing query:", error);
