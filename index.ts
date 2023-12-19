@@ -103,6 +103,13 @@ app.get("/orders/:id/cancel", async (req: Request, res: Response) => {
   tempKitchen.closeConnection();
 });
 
+app.get("/receipt", async (req: Request, res: Response) => {
+  console.log("GET /receipt");
+  const tempKitchen = new Kitchen();
+  res.json(await tempKitchen.getAllReceipt());
+  tempKitchen.closeConnection();
+});
+
 app.get("/receipt/:id/", async (req: Request, res: Response) => {
   console.log("GET /receipt/:id/");
   const tempKitchen = new Kitchen();

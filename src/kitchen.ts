@@ -199,6 +199,33 @@ export default class Kitchen {
     });
   }
 
+  public async getAllReceipt() {
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.error("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        "SELECT receipt_id, DATE_FORMAT(datetime, '%H:%i %S/%e/%m') as datetime, DATE_FORMAT(lastUpdate, '%H:%i %S/%e/%m') as lastUpdate, isValid FROM receipt",
+        (error, results) => {
+          if (error) {
+            console.error("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+  }
+
   public async getReceipt(receipt_id: number) {
     await new Promise<void>((resolve, reject) => {
       this.db.connect((error) => {
