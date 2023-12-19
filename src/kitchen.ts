@@ -280,6 +280,54 @@ export default class Kitchen {
     });
   }
 
+  public async payReceipt(receipt_id: number) {
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.log("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      this.db.query(`UPDATE orders SET isPaid = true WHERE receipt_id = ${receipt_id}`, (error, results) => {
+        if (error) {
+          console.log("Error executing query:", error);
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+
+  public async cancelReceipt(receipt_id: number) {
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.log("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      this.db.query(`UPDATE orders SET isValid = 0 WHERE receipt_id = ${receipt_id}`, (error, results) => {
+        if (error) {
+          console.log("Error executing query:", error);
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      });
+    });
+  }
+
   public async closeConnection() {
     await new Promise<void>((resolve, reject) => {
       this.db.end((error) => {

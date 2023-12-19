@@ -117,12 +117,19 @@ app.get("/receipt/:id/", async (req: Request, res: Response) => {
   tempKitchen.closeConnection();
 });
 
-// app.get("/receipt/:id/pay", async (req: Request, res: Response) => {
-//   console.log("GET /receipt/:id/pay");
-//   const tempKitchen = new Kitchen();
-//   res.json(await tempKitchen.pay(parseInt(req.params.id)));
-//   tempKitchen.closeConnection();
-// });
+app.get("/receipt/:id/pay", async (req: Request, res: Response) => {
+  console.log("GET /receipt/:id/pay");
+  const tempKitchen = new Kitchen();
+  res.json(await tempKitchen.payReceipt(parseInt(req.params.id)));
+  tempKitchen.closeConnection();
+});
+
+app.get("/receipt/:id/cancel", async (req: Request, res: Response) => {
+  console.log("GET /receipt/:id/pay");
+  const tempKitchen = new Kitchen();
+  res.json(await tempKitchen.cancelReceipt(parseInt(req.params.id)));
+  tempKitchen.closeConnection();
+});
 
 app.get("/receipt/:id/Total", async (req: Request, res: Response) => {
   console.log("GET /receipt/:id/total");
