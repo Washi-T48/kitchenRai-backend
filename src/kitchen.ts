@@ -253,6 +253,33 @@ export default class Kitchen {
     });
   }
 
+  public async getTotal(receipt_id: number) {
+    await new Promise<void>((resolve, reject) => {
+      this.db.connect((error) => {
+        if (error) {
+          console.log("Error connecting to MySQL database:", error);
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
+    });
+
+    return new Promise((resolve, reject) => {
+      this.db.query(
+        `SELECT SUM(price) as total FROM orders LEFT JOIN menu ON orders.menu_id = menu.menu_id WHERE orders.receipt_id = ${receipt_id} AND isValid <> 0`,
+        (error, results) => {
+          if (error) {
+            console.log("Error executing query:", error);
+            reject(error);
+          } else {
+            resolve(results);
+          }
+        }
+      );
+    });
+  }
+
   public async closeConnection() {
     await new Promise<void>((resolve, reject) => {
       this.db.end((error) => {

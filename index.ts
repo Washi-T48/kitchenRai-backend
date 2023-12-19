@@ -117,6 +117,20 @@ app.get("/receipt/:id/", async (req: Request, res: Response) => {
   tempKitchen.closeConnection();
 });
 
+// app.get("/receipt/:id/pay", async (req: Request, res: Response) => {
+//   console.log("GET /receipt/:id/pay");
+//   const tempKitchen = new Kitchen();
+//   res.json(await tempKitchen.pay(parseInt(req.params.id)));
+//   tempKitchen.closeConnection();
+// });
+
+app.get("/receipt/:id/Total", async (req: Request, res: Response) => {
+  console.log("GET /receipt/:id/total");
+  const tempKitchen = new Kitchen();
+  res.json(await tempKitchen.getTotal(parseInt(req.params.id)));
+  tempKitchen.closeConnection();
+});
+
 app.listen(ServerPORT, () => {
   console.log(`Server is running on port ${ServerPORT}`);
 });
