@@ -1,5 +1,6 @@
 import config from "../config/config";
 import mysql from "mysql2";
+const MongoClient = require("mongodb").MongoClient;
 
 export default class Kitchen {
   private order_id: number = -1;
@@ -295,15 +296,37 @@ export default class Kitchen {
     return new Promise((resolve, reject) => {
       this.db.query(
         `UPDATE receipt SET isPaid = true WHERE receipt_id = ${receipt_id}`,
-        (error, results) => {
+        (error: Error | null, results: any) => {
           if (error) {
             console.log("Error executing query:", error);
             reject(error);
           } else {
-            resolve(results);
+            fetch(
+              "http://" + config.server.HOSTNAMEPORT + "/receipt/" + receipt_id
+            )
+              .then((response) => response.json())
+              .then((receiptData) => {
+                console.log(receiptData);
+                MongoClient.connect(
+                  "mongodb://localhost:27017/",
+                  function (err: any, db: any) {
+                    if (err) throw err;
+                    const dbo = db.db("pos");
+                    dbo
+                      .collection("receipt")
+                      .insertMany(receiptData, function (err: any, res: any) {
+                        if (err) throw err;
+                        console.log("document inserted");
+                        db.close();
+                      });
+                  }
+                );
+              });
           }
         }
       );
+    }).catch((error) => {
+      console.log("Error fetching receipt data:", error);
     });
   }
 
@@ -321,7 +344,8 @@ export default class Kitchen {
 
     return new Promise((resolve, reject) => {
       this.db.query(
-        `UPDATE receipt SET isValid = 0 WHERE receipt_id = ${receipt_id}`,
+        // `UPDATE receipt SET isValid = 0 WHERE receipt_id = ${receipt_id}`,
+        `DELETE FROM receipt WHERE receipt_id = '${receipt_id}'`,
         (error, results) => {
           if (error) {
             console.log("Error executing query:", error);

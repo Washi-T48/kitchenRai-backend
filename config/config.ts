@@ -4,6 +4,7 @@ dotenv.config();
 const SERVER = {
   HOSTNAME: process.env.SERVER_HOSTNAME || "localhost",
   SERVERPORT: process.env.SERVER_PORT || 3000,
+  HOSTNAMEPORT: process.env.SERVER_HOSTNAME || "localhost:3000",
 };
 
 const AUTH = {
@@ -18,10 +19,15 @@ const MYSQL = {
   PORT: 3306,
 };
 
+const MONGODB = {
+  HOST: process.env.MONGODB_HOST || "mongodb://localhost:27017/pos",
+};
+
 const config = {
   server: SERVER,
   auth: AUTH,
   mysql: MYSQL,
+  mongodb: MONGODB,
 };
 
 export default config;
