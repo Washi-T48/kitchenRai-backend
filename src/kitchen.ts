@@ -1,6 +1,6 @@
 import config from "../config/config";
 import mysql from "mysql2";
-const MongoClient = require("mongodb").MongoClient;
+import { MongoClient } from "mongodb";
 
 export default class Kitchen {
   private order_id: number = -1;
@@ -306,21 +306,15 @@ export default class Kitchen {
             )
               .then((response) => response.json())
               .then((receiptData) => {
-                console.log(receiptData);
-                MongoClient.connect(
-                  "mongodb://localhost:27017/",
-                  function (err: any, db: any) {
-                    if (err) throw err;
-                    const dbo = db.db("pos");
-                    dbo
-                      .collection("receipt")
-                      .insertMany(receiptData, function (err: any, res: any) {
-                        if (err) throw err;
-                        console.log("document inserted");
-                        db.close();
-                      });
-                  }
-                );
+                MongoClient.connect(config.mongodb.HOST).then((client) => {
+                  console.log("Connected to MongoDB");
+                  const db = client.db("pos");
+                  const receipt = db.collection("receipt");
+                  receipt.insertOne({
+                    receiptData: receiptData,
+                  });
+                  client.close();
+                });
               });
           }
         }
